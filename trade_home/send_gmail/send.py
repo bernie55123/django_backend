@@ -34,7 +34,6 @@ def send_email(sender):
 
     service = build('gmail', 'v1', credentials=creds)
 
-    print("true")
     # 設定寄件者和收件者的電子郵件地址
     id = sender.id # 擷取目標信箱
     from_email = 'usr.isucsie@gmail.com'
@@ -47,7 +46,7 @@ def send_email(sender):
 
     if result == 'True':         
         subject = '審核通過!(請勿回覆)'
-        message_text = '恭喜你!\n你的交易結果已經通過審核了。\n相信您所兌換的服務很快就會有志工領取。'
+        message_text = '恭喜你!\n你的交易結果已經通過審核了。\n相信您所兌換的服務很快就會有志工領取。\n交易相關內容已上鍊'
     elif result == 'False':
         subject = '審核未通過!(請勿回覆)'
         message_text = '非常遺憾\n你的交易結果未通過審核,請您重新申請。\n網址 : (https://beta-pure.townway.com.tw)。'

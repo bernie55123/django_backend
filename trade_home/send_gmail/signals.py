@@ -16,5 +16,3 @@ def result_change_send_gmail(sender, instance, **kwargs):
 def trade_send_backend(sender, instance,created, **kwargs):
     if created:
         send_email(instance)  
-
-
