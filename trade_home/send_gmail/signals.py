@@ -8,11 +8,9 @@ post_result_change = Signal()
 
 
 @receiver(post_save, sender=trade_request)
-def result_change_send_gmail(sender, instance, **kwargs):
-    if instance.result is not None:
+def result_change_send_gmail(sender, instance,created, **kwargs):
+    if created:
+        send_email(instance) 
+    elif instance.result is not None:
         send_email(instance)
 
-@receiver(post_save, sender=trade_request)
-def trade_send_backend(sender, instance,created, **kwargs):
-    if created:
-        send_email(instance)  
