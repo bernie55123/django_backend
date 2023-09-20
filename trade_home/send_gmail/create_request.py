@@ -12,8 +12,8 @@ def create_requist(request):
         balance = request.POST.get("balance")
         task_name = request.POST.get("name")
         task_cost = request.POST.get("token")
-        tack_info = request.POST.get("overview")
-        create_trade_request = trade_request(id=id ,balance=balance ,task_name=task_name ,task_cost=task_cost ,tack_info=tack_info ,result=None)
+        task_info = request.POST.get("overview")
+        create_trade_request = trade_request(id=id ,balance=balance ,task_name=task_name ,task_cost=task_cost ,task_info=task_info ,result=None)
         create_trade_request.save()
         
         response_data = {'message': 'Task created successfully'}
