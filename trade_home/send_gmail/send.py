@@ -11,6 +11,8 @@ from .models import trade_request,id_info
 
 # 設定要存取的範圍
 SCOPES = ['https://mail.google.com/']
+
+#交易上鍊
 def trade_chain(sender):
     url = "https://poe.townway.com.tw/iota/message"
     balance = sender.balance
@@ -34,6 +36,11 @@ def trade_chain(sender):
     message_trace = response_data.get("explorer")
     return message_trace,new_balance
 
+#扣除balance
+def decrease_balance(sender):
+    balance_record = id_info.objects.get(id=sender.id)
+    balance_record.balance-=sender.task_cost
+    balance_record.save()
 
 def create_message(from_email, to_email, subject, message_text):
     message = MIMEText(message_text)
@@ -70,6 +77,7 @@ def send_email(sender):
 
     if result == 'True':
         message_trace,new_balance = trade_chain(sender)
+        decrease_balance(sender)
         subject = '審核通過!(請勿回覆)'
         message_text = '恭喜你!\n你的交易結果已經通過審核了。\n相信您所兌換的服務很快就會有志工領取。\n交易相關內容已上鍊:'+message_trace
         id_info.objects.filter(id=sender.id).update(balance=new_balance)
