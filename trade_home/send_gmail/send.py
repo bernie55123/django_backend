@@ -12,6 +12,38 @@ from .models import trade_request,id_info
 # 設定要存取的範圍
 SCOPES = ['https://mail.google.com/']
 
+#向前端發布任務
+"""def create_trade_mission(sender):
+    uuid = "00000001"
+    email = sender.id
+    type = "1"
+    name = sender.task_name  # 任務名稱
+    overview = sender.task_info  # 任務概述
+    token = sender.task_cost  # 任務時長
+    cover = "your_cover_data_here"  # 這裡應該是你的任務封面數據
+
+    url = f"{HOST_URL_TPLANET_DAEMON}/tasks/new"
+    data = {
+        "uuid": uuid,
+        "email": email,
+        "type": type,
+        "name": name,
+        "token": token,
+        "overview": overview,
+        "cover": cover
+    }
+
+    response = requests.post(url, data=data)
+
+    if response.status_code == 200:
+        print("Request successful")
+        print(response.json())
+        
+    else:
+        print("Request failed")
+        print(response.status_code)
+"""
+
 #交易上鍊
 def trade_chain(sender):
     url = "https://poe.townway.com.tw/iota/message"
@@ -42,6 +74,7 @@ def decrease_balance(sender):
     balance_record.balance-=sender.task_cost
     balance_record.save()
 
+#建立信件信息
 def create_message(from_email, to_email, subject, message_text):
     message = MIMEText(message_text)
     message['to'] = to_email
@@ -49,6 +82,7 @@ def create_message(from_email, to_email, subject, message_text):
     message['subject'] = subject
     return {'raw': base64.urlsafe_b64encode(message.as_bytes()).decode()}
 
+#寄送信件
 def send_message(service, user_id, message):
     try:
         message = service.users().messages().send(userId=user_id, body=message).execute()
