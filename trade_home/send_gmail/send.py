@@ -13,24 +13,31 @@ from .models import trade_request,id_info
 SCOPES = ['https://mail.google.com/']
 
 #向前端發布任務
-"""def create_trade_mission(sender):
+def create_trade_mission(sender):
     uuid = "00000001"
     email = sender.id
     type = "1"
     name = sender.task_name  # 任務名稱
-    overview = sender.task_info  # 任務概述
     token = sender.task_cost  # 任務時長
-    cover = "your_cover_data_here"  # 這裡應該是你的任務封面數據
+    people_limit = sender.people #人數限制
+    point_limit = sender.point #積分限制
+    description_limit = sender.description #專長限制
+    overview = sender.task_info  # 任務概述
+    
+    cover = sender.thumbnail  # 這裡應該是你的任務封面數據
 
-    url = f"{HOST_URL_TPLANET_DAEMON}/tasks/new"
+    url = "https://beta-tplanet-backend.townway.com.tw/tasks/new"
     data = {
-        "uuid": uuid,
-        "email": email,
-        "type": type,
-        "name": name,
-        "token": token,
-        "overview": overview,
-        "cover": cover
+        "uuid" : uuid,
+        "email" : email,
+        "type" : type,
+        "name" : name,
+        "token" : token,
+        "people" : people_limit,
+        "point" : point_limit,
+        "description" : description_limit,
+        "overview" : overview,
+        "cover" : cover
     }
 
     response = requests.post(url, data=data)
@@ -42,7 +49,7 @@ SCOPES = ['https://mail.google.com/']
     else:
         print("Request failed")
         print(response.status_code)
-"""
+
 
 #交易上鍊
 def trade_chain(sender):

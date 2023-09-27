@@ -12,6 +12,7 @@ class trade_request(models.Model):
     point_limit = models.PositiveIntegerField(default=0,validators=[MaxValueValidator(limit_value=100)],blank=False,verbose_name='積分限制')
     description_limit = models.TextField(default=None ,null= True ,blank = True ,verbose_name = '專長限制')
     task_info = models.TextField(default=None ,null= True ,blank = True ,verbose_name = '任務內容')
+    thumbnail = models.TextField(blank = True,verbose_name="圖片路徑")
     result = models.CharField(max_length= 10000 ,null = True , default=None , verbose_name = '解果' , choices=[('None', ' '),('True', '通過'), ('False', '不通過')])
     
 class id_info(models.Model):
