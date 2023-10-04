@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'trust_point',
     'corsheaders',
     
+    
 ]
 
 MIDDLEWARE = [

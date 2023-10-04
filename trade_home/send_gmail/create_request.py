@@ -8,19 +8,19 @@ from .models import trade_request
 
 
 @csrf_exempt
-def create_requist(request):
+def create_request(request):
     if request.method == "POST":
         req = request.POST.dict()
         id = request.POST.get("email")
         balance = request.POST.get("balance")
         task_name = request.POST.get("name")
         task_cost = request.POST.get("token")
-        people_limit = request.POST.get("people")
+        max_people = request.POST.get("people")
         point_limit = request.POST.get("point")
         description_limit =request.POST.get("description")
         task_info = request.POST.get("overview")
         thumbnail = cover_decode(req)
-        create_trade_request = trade_request(id=id ,balance=balance ,task_name=task_name ,task_cost=task_cost ,people_limit=people_limit,point_limit=point_limit,description_limit=description_limit,task_info=task_info,thumbnail=thumbnail,result=None)
+        create_trade_request = trade_request(id=id ,balance=balance ,task_name=task_name ,task_cost=task_cost ,max_people=max_people,point_limit=point_limit,description_limit=description_limit,task_info=task_info,thumbnail=thumbnail,result=None)
         create_trade_request.save()
         
         response_data = {'message': 'Task created successfully'}

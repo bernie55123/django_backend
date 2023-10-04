@@ -15,7 +15,7 @@ SCOPES = ['https://mail.google.com/']
 #向前端發布任務
 def create_trade_mission(sender):
     uuid = "00000001"
-    email = sender.id
+    email = "400@gmail.com"
     type = "1"
     name = sender.task_name  # 任務名稱
     token = sender.task_cost  # 任務時長
@@ -106,8 +106,7 @@ def send_email(sender):
 
     service = build('gmail', 'v1', credentials=creds)
 
-    # 設定寄件者和收件者的電子郵件地址
-    id = sender.id # 擷取目標信箱
+    # 設定寄件者的電子郵件地址
     from_email = 'usr.isucsie@gmail.com'
 
     # 目標郵件位址
@@ -119,6 +118,7 @@ def send_email(sender):
     if result == 'True':
         message_trace,new_balance = trade_chain(sender)
         decrease_balance(sender)
+        create_trade_mission(sender)
         subject = '審核通過!(請勿回覆)'
         message_text = '恭喜你!\n你的交易結果已經通過審核了。\n相信您所兌換的服務很快就會有志工領取。\n交易相關內容已上鍊:'+message_trace
         id_info.objects.filter(id=sender.id).update(balance=new_balance)

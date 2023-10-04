@@ -18,11 +18,17 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 from django.views.generic import RedirectView
-from send_gmail.create_request import create_requist
+from send_gmail.create_request import create_request
+from send_gmail.views import get_data
+from trust_point.views import get_trust_point
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('trade_request/add', create_requist),
+    path('create_request', create_request),
+    path('get_trust_point',get_trust_point),
+    path('get_data',get_data),
+
 ]
 
