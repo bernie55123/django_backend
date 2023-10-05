@@ -6,15 +6,15 @@ import json
 
 
 @csrf_exempt
-def get_data(self,req):
-    obj_user = User.objects.get(email=req["email"])
-    TRU = trade_request.objects.get(id = obj_user)
+def get_data(request):
+    email = request.POST.get("email")
+    TRU = trade_request.objects.get(id = email)
     response = HttpResponse()
     data = json.dumps({
         "max_people" : TRU.max_people,
         "now_people" : TRU.now_people,
         "point_limit" : TRU.point_limit,
-        "description_limit" : TRU.description_limit
+        "description_limit" : json.loads(TRU.description_limit)
     })
     response.write(data)
     return response

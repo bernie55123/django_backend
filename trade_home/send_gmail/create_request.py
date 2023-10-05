@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError, JsonResponse
 from pathlib import Path
 from .models import trade_request
+import datetime,re
 
 
 @csrf_exempt
@@ -38,13 +39,17 @@ def cover_decode(req):
         req["cover"] = req["cover"].replace("data:image/png;base64,", "")
     else:
         req["cover"] = req["cover"].replace("data:image/jpeg;base64,", "")
-    
+
+    time = datetime.datetime.now()
+    data = req["email"] + str(time)
+    new_data = re.sub(r'[^\w-]', '', data)
+
     file_content = base64.b64decode(req["cover"])
-    
-    PATH_COVER = settings.STATICFILES_DIRS[0] + "/tasks/" + req.uuid + "/cover"
+
+    PATH_COVER = settings.STATICFILES_DIRS[0] + "/tasks/" + new_data + "/cover"
     path_dir_cover = Path(PATH_COVER)
     path_dir_cover.mkdir(parents = True, exist_ok = True)
     with open(PATH_COVER + "/cover.png","wb") as f:
         f.write(file_content)
-    req.thumbnail = settings.STATIC_URL + req.uuid + "/tasks/" + req.uuid + "/cover/cover.png"
-    return req.thumbnail
+    cover_path = settings.STATIC_URL + new_data + "/tasks/" + new_data + "/cover/cover.png"
+    return cover_path
