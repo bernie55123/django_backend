@@ -19,10 +19,10 @@ def decreasepoint(sender):
     except trust_point.DoesNotExist:
         pass
 @csrf_exempt
-def get_trust_point(self,req):
-    obj_user = User.objects.get(email=req["email"])
-    TRU = trust_point.objects.get(id = obj_user)
+def get_trust_point(request):
+    email = request.POST.get("email")
+    TRU = trust_point.objects.get(id = email)
     response = HttpResponse()
-    data = json.loads(TRU.trust_point)
+    data = json.loads(str(TRU.trust_point))
     response.write(data)
     return response

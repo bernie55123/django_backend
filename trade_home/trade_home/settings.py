@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
+from .env import secret_key
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ''
+SECRET_KEY = secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -130,10 +131,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = False
 
-CORS_ALLOWED_ORIGINS = ["https://bernie55123.github.io","http://127.0.0.1:8000"]
+CORS_ALLOWED_ORIGINS = ["https://bernie55123.github.io","http://127.0.0.1:5500"]
 
 CORS_ALLOW_ORIGINS = ["*"]
 
 CORS_ALLOWED_METHODS = ["*"]
 
 CORS_ALLOW_HEADERS = ["*"]
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
