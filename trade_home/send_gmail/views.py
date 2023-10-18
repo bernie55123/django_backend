@@ -1,7 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from .models import trade_request
+from .models import trade_request,trust_point,Profile
 import json
 
 
@@ -22,4 +22,32 @@ def get_data(request):
     response.write(data)
     return response
 
+#扣除信用積分
+@csrf_exempt
+def decreasepoint(sender):
+    try:
+        trust_point_record = trust_point.objects.get(obj_user=sender.id)
+        trust_point_record.trust_point -= sender.decrease_point
+        trust_point.objects.filter(obj_user = sender.id).update(trust_point = trust_point_record.trust_point)
+    except trust_point.DoesNotExist:
+        pass
+
+#新增信用積分
+def increasepoint(sender):
+    try:
+        trust_point_record = trust_point.objects.get(obj_user=sender.id)
+        trust_point_record.trust_point += sender.increase_point
+        trust_point.objects.filter(obj_user = sender.id).update(trust_point = trust_point_record.trust_point)
+    except trust_point.DoesNotExist:
+        pass
+
+#取得信用積分
+@csrf_exempt
+def get_trust_point(request):
+    email = request.POST.get("email")
+    TRU = trust_point.objects.get(id = email)
+    response = HttpResponse()
+    data = json.loads(str(TRU.trust_point))
+    response.write(data)
+    return response
 
