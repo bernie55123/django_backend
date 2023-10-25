@@ -15,10 +15,10 @@ def result_change_send_gmail(sender, instance,created, **kwargs):
     elif instance.result is not None:
         send_email(instance)
 
-trust_point_change = Signal()
+trust_point_change_ = Signal()
 
 @receiver(post_save, sender=trust_point)
-def trust_point_decrease(sender, instance,created, **kwargs):
+def trust_point_change(sender, instance,created, **kwargs):
     decreasepoint(sender=instance)
     increasepoint(sender=instance)
 

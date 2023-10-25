@@ -8,7 +8,7 @@ import json
 @csrf_exempt
 def get_data(request):
     email = request.POST.get("email")
-    TRU = trade_request.objects.get(id = email)
+    TRU = trade_request.objects.get(obj_user=email)
     response = HttpResponse()
     data = json.dumps({
         "max_people" : TRU.max_people,
@@ -26,26 +26,30 @@ def get_data(request):
 @csrf_exempt
 def decreasepoint(sender):
     try:
-        trust_point_record = trust_point.objects.get(obj_user=sender.id)
+        trust_point_record = Profile.objects.get(obj_user=sender.obj_user)
         trust_point_record.trust_point -= sender.decrease_point
-        trust_point.objects.filter(obj_user = sender.id).update(trust_point = trust_point_record.trust_point)
-    except trust_point.DoesNotExist:
+        if trust_point_record.trust_point<0:
+                trust_point_record.trust_point = 0
+        trust_point_record.save()
+    except Profile.DoesNotExist:
         pass
 
 #新增信用積分
 def increasepoint(sender):
     try:
-        trust_point_record = trust_point.objects.get(obj_user=sender.id)
-        trust_point_record.trust_point += sender.increase_point
-        trust_point.objects.filter(obj_user = sender.id).update(trust_point = trust_point_record.trust_point)
-    except trust_point.DoesNotExist:
+        trust_point_record = Profile.objects.get(obj_user=sender.obj_user)
+        if trust_point_record.trust_point+sender.increase_point<100:
+            trust_point_record.trust_point += sender.increase_point
+        trust_point_record.save()
+    except Profile.DoesNotExist:
         pass
 
 #取得信用積分
 @csrf_exempt
 def get_trust_point(request):
     email = request.POST.get("email")
-    TRU = trust_point.objects.get(id = email)
+    obj_user = User.objects.filter(email = email).get()
+    TRU = trust_point.objects.get(obj_user=obj_user)
     response = HttpResponse()
     data = json.loads(str(TRU.trust_point))
     response.write(data)
