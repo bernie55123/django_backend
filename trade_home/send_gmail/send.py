@@ -53,7 +53,7 @@ def create_trade_mission(sender):
 
 #交易上鍊
 def trade_chain(sender):
-    url = "http://140.127.196.78:1234/iota/message"
+    url = "http://alfred.townway.com.tw/iota/message"
     balance = sender.balance
     task_name = sender.task_name
     task_cost = sender.task_cost

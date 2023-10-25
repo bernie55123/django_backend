@@ -49,7 +49,7 @@ def increasepoint(sender):
 def get_trust_point(request):
     email = request.POST.get("email")
     obj_user = User.objects.filter(email = email).get()
-    TRU = trust_point.objects.get(obj_user=obj_user)
+    TRU = Profile.objects.get(obj_user=obj_user)
     response = HttpResponse()
     data = json.loads(str(TRU.trust_point))
     response.write(data)
