@@ -28,7 +28,7 @@ def decreasepoint(sender):
     try:
         trust_point_record = Profile.objects.get(obj_user=sender.obj_user)
         trust_point_record.trust_point -= sender.decrease_point
-        if trust_point_record.trust_point<0:
+        if trust_point_record.trust_point <= 0:
                 trust_point_record.trust_point = 0
         trust_point_record.save()
     except Profile.DoesNotExist:
@@ -38,9 +38,14 @@ def decreasepoint(sender):
 def increasepoint(sender):
     try:
         trust_point_record = Profile.objects.get(obj_user=sender.obj_user)
-        if trust_point_record.trust_point+sender.increase_point<100:
+        print(trust_point_record.trust_point)
+        if trust_point_record.trust_point+sender.increase_point<=100:
             trust_point_record.trust_point += sender.increase_point
+        else:
+            trust_point_record.trust_point = 100
         trust_point_record.save()
+        print(sender.increase_point)
+        print(trust_point_record.trust_point)
     except Profile.DoesNotExist:
         pass
 

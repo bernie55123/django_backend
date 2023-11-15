@@ -20,8 +20,8 @@ def create_request(request):
         point_limit = request.POST.get("point")
         description_limit =request.POST.get("description")
         task_info = request.POST.get("overview")
-        thumbnail = cover_decode(req)
-        create_trade_request = trade_request(obj_user=obj_user ,balance=balance ,task_name=task_name ,task_cost=task_cost ,max_people=max_people,point_limit=point_limit,description_limit=description_limit,task_info=task_info,thumbnail=thumbnail,result=None)
+        thumbnail,img = cover_decode(req)
+        create_trade_request = trade_request(obj_user=obj_user ,balance=balance ,task_name=task_name ,task_cost=task_cost ,max_people=max_people,point_limit=point_limit,description_limit=description_limit,task_info=task_info,thumbnail=thumbnail,img=img,result=None)
         create_trade_request.save()
         
         response_data = {'message': 'Task created successfully'}
@@ -35,6 +35,7 @@ def create_request(request):
 
 def cover_decode(req):
 
+    img = req["cover"]
     if "data:image/png;base64," in req["cover"]:
         req["cover"] = req["cover"].replace("data:image/png;base64,", "")
     else:
@@ -52,4 +53,4 @@ def cover_decode(req):
     with open(PATH_COVER + "/cover.png","wb") as f:
         f.write(file_content)
     cover_path = settings.STATIC_URL + new_data + "/tasks/" + new_data + "/cover/cover.png"
-    return cover_path
+    return cover_path,img

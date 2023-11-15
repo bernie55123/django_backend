@@ -24,7 +24,7 @@ def create_trade_mission(sender):
     point_limit = sender.point_limit #積分限制
     description_limit = sender.description_limit #專長限制
     overview = sender.task_info  # 任務內容
-    cover = sender.thumbnail  # 圖片
+    cover = sender.img  # 圖片
 
     url = "https://beta-tplanet-backend.townway.com.tw/tasks/new"
     data = {
@@ -53,7 +53,7 @@ def create_trade_mission(sender):
 
 #交易上鍊
 def trade_chain(sender):
-    url = "http://alfred.townway.com.tw/iota/message"
+    url = "https://alfred.townway.com.tw/iota/message"
     balance = sender.balance
     task_name = sender.task_name
     task_cost = sender.task_cost

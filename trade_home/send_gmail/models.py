@@ -22,6 +22,7 @@ class trade_request(models.Model):
     description_limit = models.TextField(default=None ,null= True ,blank = True ,verbose_name = '專長限制')
     task_info = models.TextField(default=None ,null= True ,blank = True ,verbose_name = '任務內容')
     thumbnail = models.TextField(blank = True,verbose_name="圖片路徑")
+    img = models.TextField(blank = True,verbose_name="圖片檔案")
     result = models.CharField(max_length= 10000 ,null = True , default=None , verbose_name = '解果' , choices=[('None', ' '),('True', '通過'), ('False', '不通過')])
 
 class trust_point(models.Model):
