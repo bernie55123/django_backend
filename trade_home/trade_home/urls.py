@@ -19,7 +19,7 @@ from django.urls import path
 from django.conf.urls import include
 from django.views.generic import RedirectView
 from send_gmail.create_request import create_request
-from send_gmail.views import get_data,get_trust_point
+from send_gmail.views import get_data,get_trust_point,get_number_of_task
 
 
 
@@ -28,6 +28,7 @@ urlpatterns = [
     path('create_request', create_request),
     path('get_trust_point',get_trust_point),
     path('get_data',get_data),
+    path('get_number_of_task',get_number_of_task)
 
 ]
 

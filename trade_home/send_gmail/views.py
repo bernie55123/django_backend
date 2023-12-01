@@ -2,7 +2,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from .models import trade_request,trust_point,Profile
-import json
+import json,requests
 
 
 @csrf_exempt
@@ -60,3 +60,16 @@ def get_trust_point(request):
     response.write(data)
     return response
 
+
+#取得可發布任務數量
+@csrf_exempt
+def get_number_of_task(request):
+    email = request.POST.get('email')
+    obj_user = Profile.objects.filter(email = email).get()
+    response = HttpResponse()
+    data = {
+        "number_of_task":obj_user.number_of_task,
+        "number_of_task_max":obj_user.number_of_task_max,
+        }
+    response.write(data)
+    return response

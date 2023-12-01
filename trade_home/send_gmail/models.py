@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator,MinValueValidator
 from django.contrib.auth.models import User
 
 
@@ -10,6 +10,8 @@ class Profile(models.Model):
     balance = models.IntegerField(default=0 ,verbose_name = '時間餘額')
     description = models.CharField(max_length = 400, default = None, blank = True, null = True)
     trust_point = models.PositiveIntegerField(default=100,validators=[MaxValueValidator(limit_value=100)],blank=False,verbose_name='信用積分')
+    number_of_task = models.IntegerField(default=0,verbose_name='已發布任務數量')
+    number_of_task_max = models.IntegerField(default=5,verbose_name='發布任務數量上限')
 
 class trade_request(models.Model):
     obj_user = models.EmailField(max_length= 10000,primary_key=True,unique=True,verbose_name = 'email')
@@ -18,7 +20,7 @@ class trade_request(models.Model):
     task_cost = models.IntegerField(default=0 ,verbose_name = '任務時長')
     now_people = models.IntegerField(default=0,verbose_name = '現在人數')
     max_people = models.IntegerField(default=0,verbose_name = '總人數')
-    point_limit = models.PositiveIntegerField(default=0,validators=[MaxValueValidator(limit_value=100)],blank=False,verbose_name='積分限制')
+    point_limit = models.PositiveIntegerField(default=0,validators=[MaxValueValidator(100)],blank=False,verbose_name='積分限制')
     description_limit = models.TextField(default=None ,null= True ,blank = True ,verbose_name = '專長限制')
     task_info = models.TextField(default=None ,null= True ,blank = True ,verbose_name = '任務內容')
     thumbnail = models.TextField(blank = True,verbose_name="圖片路徑")

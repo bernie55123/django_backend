@@ -16,7 +16,7 @@ SCOPES = ['https://mail.google.com/']
 #向前端發布任務
 def create_trade_mission(sender):
     uuid = "00000001"
-    email = "400@gmail.com"
+    email = "yillkid@gmail.com"
     type = "1"
     name = sender.task_name  # 任務名稱
     token = sender.task_cost  # 任務時長
@@ -26,16 +26,16 @@ def create_trade_mission(sender):
     overview = sender.task_info  # 任務內容
     cover = sender.img  # 圖片
 
-    url = "https://beta-tplanet-backend.townway.com.tw/tasks/new"
+    url = "https://isu-tplanet.townway.com.tw/tasks/new"
     data = {
         "uuid" : uuid,
         "email" : email,
         "type" : type,
         "name" : name,
         "token" : token,
-        "people" : people_limit,
-        "point" : point_limit,
-        "description" : description_limit,
+        "max_people" : people_limit,
+        "point_limit" : point_limit,
+        "description_limit" : description_limit,
         "overview" : overview,
         "cover" : cover
     }
@@ -62,7 +62,7 @@ def trade_chain(sender):
     description_limit = sender.description_limit
     task_info = sender.task_info
     result = sender.result
-    new_balance = balance-task_cost
+    new_balance = balance-(task_cost*people_limit)
     task = json.dumps({"id":sender.obj_user, "balance":balance, "task_name":task_name,
         "task_cost":task_cost,"task_info":task_info,"people_limit":people_limit,"point_limit":point_limit,"description_limit":description_limit,"result":result,"new_balance":new_balance})
 
@@ -75,6 +75,7 @@ def trade_chain(sender):
     }
     response = requests.request("POST", url, headers=headers, data=payload)
     response_data = response.json()
+    print (response_data)
     message_trace = 'https://explorer.iota.org/mainnet/block/'+response_data[0]
     return message_trace,new_balance
 
@@ -98,7 +99,7 @@ def send_message(service, user_id, message):
 
 
 #寄送信件
-def send_email(sender):
+def send_email(sender,jump):
     # 載入憑證檔案
     creds = Credentials.from_authorized_user_file('token.json', SCOPES)
 
@@ -110,13 +111,22 @@ def send_email(sender):
     # result:交易結果
     result = sender.result
 
+    if jump is True:
+        result = 'True'
+    elif jump is None :
+        if result is not None:
+            result=result
+    print(result)
+
     if result == 'True':
         message_trace,new_balance = trade_chain(sender)
         create_trade_mission(sender)
         subject = '審核通過!(請勿回覆)'
         message_text = '恭喜你!\n你的交易結果已經通過審核了。\n相信您所兌換的服務很快就會有志工領取。\n交易相關內容已上鍊:'+ message_trace
         obj_user = User.objects.filter(email = sender.obj_user).get()
-        Profile.objects.filter(obj_user=obj_user.id).update(balance=new_balance)
+        Profile_user = Profile.objects.filter(obj_user=obj_user).get()
+        Profile_user.number_of_task = Profile_user.number_of_task+1
+        Profile.objects.filter(obj_user=obj_user.id).update(balance=new_balance,number_of_task=Profile_user.number_of_task)
         trade_request.objects.filter(obj_user=sender.obj_user).delete()
     elif result == 'False':
         subject = '審核未通過!(請勿回覆)'
