@@ -62,7 +62,7 @@ def trade_chain(sender):
     description_limit = sender.description_limit
     task_info = sender.task_info
     result = sender.result
-    new_balance = balance-(task_cost*people_limit)
+    new_balance = int(balance)-(int(task_cost)*int(people_limit))
     task = json.dumps({"id":sender.obj_user, "balance":balance, "task_name":task_name,
         "task_cost":task_cost,"task_info":task_info,"people_limit":people_limit,"point_limit":point_limit,"description_limit":description_limit,"result":result,"new_balance":new_balance})
 
@@ -111,12 +111,13 @@ def send_email(sender,jump):
     # result:交易結果
     result = sender.result
 
+    
+
     if jump is True:
         result = 'True'
     elif jump is None :
         if result is not None:
             result=result
-    print(result)
 
     if result == 'True':
         message_trace,new_balance = trade_chain(sender)
@@ -137,3 +138,4 @@ def send_email(sender,jump):
         message_text = '恭喜你\n你的交易請求已送出,請耐心等候管理員審核。\n後續結果將以信件通知,屆時請關注信箱。'
     message = create_message(from_email, sender.obj_user, subject, message_text)
     send_message(service, 'me', message)
+

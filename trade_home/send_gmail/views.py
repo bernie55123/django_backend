@@ -65,11 +65,24 @@ def get_trust_point(request):
 @csrf_exempt
 def get_number_of_task(request):
     email = request.POST.get('email')
-    obj_user = Profile.objects.filter(email = email).get()
+    obj_user = User.objects.filter(email=email).get()
+    user_profile = Profile.objects.filter(obj_user=obj_user).get()
     response = HttpResponse()
-    data = {
-        "number_of_task":obj_user.number_of_task,
-        "number_of_task_max":obj_user.number_of_task_max,
-        }
+    data = json.dumps({
+        "number_of_task": user_profile.number_of_task,
+        "number_of_task_max": user_profile.number_of_task_max,
+    })
     response.write(data)
+    return response
+
+#任務結束回復可發布任務數量
+@csrf_exempt
+def reply_number_of_task(request):
+    email = request.POST.get('email')
+    obj_user = User.objects.filter(email=email).get()
+    user_profile = Profile.objects.filter(obj_user=obj_user).get()
+    user_profile.number_of_task = user_profile.number_of_task-1
+    Profile.objects.filter(obj_user=obj_user.id).update(number_of_task=user_profile.number_of_task)
+    response = HttpResponse()
+    response.write("The number of task is reply!")
     return response

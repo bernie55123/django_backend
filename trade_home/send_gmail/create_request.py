@@ -8,9 +8,12 @@ from .models import trade_request
 import datetime,re
 
 
+defalut_type=["環境清理","照顧寵物","照護","課業輔導","行政支援"]
+
 @csrf_exempt
 def create_request(request):
     if request.method == "POST":
+        create_trade_request = trade_request()
         req = request.POST.dict()
         obj_user = request.POST.get("email")
         balance = request.POST.get("balance")
@@ -21,8 +24,13 @@ def create_request(request):
         description_limit =request.POST.get("description")
         task_info = request.POST.get("overview")
         thumbnail,img = cover_decode(req)
-        create_trade_request = trade_request(obj_user=obj_user ,balance=balance ,task_name=task_name ,task_cost=task_cost ,max_people=max_people,point_limit=point_limit,description_limit=description_limit,task_info=task_info,thumbnail=thumbnail,img=img,result=None)
-        create_trade_request.save()
+        if task_name not in defalut_type:
+            create_trade_request = trade_request(obj_user=obj_user ,balance=balance ,task_name=task_name ,task_cost=task_cost ,max_people=max_people,point_limit=point_limit,description_limit=description_limit,task_info=task_info,thumbnail=thumbnail,img=img,result=None)
+            create_trade_request.save()
+        else:
+            create_trade_request = trade_request(obj_user=obj_user ,balance=balance ,task_name=task_name ,task_cost=task_cost ,max_people=max_people,point_limit=point_limit,description_limit=description_limit,task_info=task_info,thumbnail=thumbnail,img=img,result=True)
+            create_trade_request.save()
+            create_trade_request.delete()
         
         response_data = {'message': 'Task created successfully'}
 
