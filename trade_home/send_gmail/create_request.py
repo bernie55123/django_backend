@@ -15,20 +15,20 @@ def create_request(request):
     if request.method == "POST":
         create_trade_request = trade_request()
         req = request.POST.dict()
-        obj_user = request.POST.get("email")
-        balance = request.POST.get("balance")
-        task_name = request.POST.get("name")
-        task_cost = request.POST.get("token")
-        max_people = request.POST.get("people")
-        point_limit = request.POST.get("point")
-        description_limit =request.POST.get("description")
-        task_info = request.POST.get("overview")
-        thumbnail,img = cover_decode(req)
-        if task_name not in defalut_type:
-            create_trade_request = trade_request(obj_user=obj_user ,balance=balance ,task_name=task_name ,task_cost=task_cost ,max_people=max_people,point_limit=point_limit,description_limit=description_limit,task_info=task_info,thumbnail=thumbnail,img=img,result=None)
+        create_trade_request.obj_user = request.POST.get("email")
+        create_trade_request.balance = request.POST.get("balance")
+        create_trade_request.task_name = request.POST.get("name")
+        create_trade_request.task_cost = request.POST.get("token")
+        create_trade_request.max_people = request.POST.get("people")
+        create_trade_request.point_limit = request.POST.get("point")
+        create_trade_request.description_limit =request.POST.get("description")
+        create_trade_request.task_info = request.POST.get("overview")
+        create_trade_request.thumbnail,create_trade_request.img = cover_decode(req)
+        if create_trade_request.task_name not in defalut_type:
+            create_trade_request.result = None
             create_trade_request.save()
         else:
-            create_trade_request = trade_request(obj_user=obj_user ,balance=balance ,task_name=task_name ,task_cost=task_cost ,max_people=max_people,point_limit=point_limit,description_limit=description_limit,task_info=task_info,thumbnail=thumbnail,img=img,result=True)
+            create_trade_request.result = True
             create_trade_request.save()
             create_trade_request.delete()
         

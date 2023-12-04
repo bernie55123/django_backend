@@ -14,7 +14,7 @@ class Profile(models.Model):
     number_of_task_max = models.IntegerField(default=5,verbose_name='發布任務數量上限')
 
 class trade_request(models.Model):
-    obj_user = models.EmailField(max_length= 10000,primary_key=True,unique=True,verbose_name = 'email')
+    obj_user = models.EmailField(max_length= 10000,verbose_name = 'email')
     balance = models.IntegerField(default=0 ,verbose_name = '時間餘額')
     task_name = models.CharField(default=None ,max_length = 30 ,null=True ,verbose_name = '任務名稱')
     task_cost = models.IntegerField(default=0 ,verbose_name = '任務時長')
