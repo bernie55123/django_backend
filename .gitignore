@@ -2,4 +2,3 @@ trade_home/token.json
 env.py
 *.pyc
 trade_home/static/tasks/*
-db.sqlite3
